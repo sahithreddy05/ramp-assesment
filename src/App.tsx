@@ -82,12 +82,13 @@ export function App() {
             <Transactions transactions={transactions} />
           )}
 
-          {transactions !== null && (
+          {transactions !== null && paginatedTransactions?.nextPage !== null && (
             <button
               className="RampButton"
               disabled={paginatedTransactionsUtils.loading}
               onClick={async () => {
-                await loadAllTransactions();
+                // await loadAllTransactions();
+                await paginatedTransactionsUtils.fetchAll();
               }}
             >
               View More
