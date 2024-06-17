@@ -8,11 +8,14 @@ export function usePaginatedTransactions(): PaginatedTransactionsResult {
   const [paginatedTransactions, setPaginatedTransactions] = useState<PaginatedResponse<Transaction[]> | null>(null);
 
   const fetchAll = useCallback(async () => {
+    const page = paginatedTransactions === null ? 0 : paginatedTransactions.nextPage;
+    if (page === null) {
+      throw new Error("Page cannot be null");
+    }
+
     const response = await fetchWithCache<PaginatedResponse<Transaction[]>, PaginatedRequestParams>(
       "paginatedTransactions",
-      {
-        page: paginatedTransactions === null ? 0 : paginatedTransactions.nextPage,
-      }
+      { page }
     );
 
     setPaginatedTransactions((previousResponse) => {
